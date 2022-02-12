@@ -1,5 +1,5 @@
 const Hospital = require('../models/Hospital');
-const hospital = require('../models/Hospital');
+//const hospital = require('../models/Hospital');
 //@dec      Get all hospitals
 //route     GET /api/v1/hospitals
 //access    Public
