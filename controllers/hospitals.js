@@ -1,4 +1,5 @@
 const Hospital = require('../models/Hospital');
+const vacCenter = require('../models/vacCenter');
 //const hospital = require('../models/Hospital');
 //@dec      Get all hospitals
 //route     GET /api/v1/hospitals
@@ -85,9 +86,9 @@ exports.getHospital=async(req,res,next) => {
     try{
         const hospital = await Hospital.findById(req.params.id).populate('appointments');
 
-        if (!hospital)
+        if (!hospital){
             res.status(400).json({success:false});
-
+        }
         res.status(200).json({success:true, data:hospital});
     }
     catch(err){
@@ -153,4 +154,14 @@ exports.deleteHospital=async(req,res,next) => {
         res.status(400).json({success:false});
     }
     
+}
+
+//@dec      Delete single hospital
+//route     GET /api/v1/hospitals/:id
+//access    Private
+exports.getVacCenters=(req,res,next)=>{
+    vacCenter.getAll((err,data)=>{
+        if(err) res.status(500).json({success:false,message:err.message||"Some error occurred while retrieving Vaccine centers."});
+        else res.status(200).json({success:true,data: data})
+    });
 }
