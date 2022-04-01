@@ -5,6 +5,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 
 // Load environment variables
 dotenv.config({path:"./config/config.env"});
@@ -33,6 +35,12 @@ app.use(xss());
 // Rate limiting
 const limiter = rateLimit({windowsMs:10*60*1000,max: 100}); // 10 mins
 app.use(limiter);
+
+// Prevent htpp param pollutions
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Routes files
 const hospitals = require('./routes/hospitals');
