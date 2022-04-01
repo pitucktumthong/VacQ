@@ -1,6 +1,10 @@
 const express = require('express');
 const dotenv  = require('dotenv');
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 
 // Load environment variables
 dotenv.config({path:"./config/config.env"});
@@ -16,6 +20,19 @@ app.use(express.json());
 
 //Cookie parser
 app.use(cookieParser());
+
+// Sanitize
+app.use(mongoSanitize());
+
+// Set security header
+app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
+
+// Rate limiting
+const limiter = rateLimit({windowsMs:10*60*1000,max: 100}); // 10 mins
+app.use(limiter);
 
 // Routes files
 const hospitals = require('./routes/hospitals');
